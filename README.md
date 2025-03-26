@@ -1,105 +1,171 @@
-# POX MCP Server
+# ONOS MCP Server
 
 ## Overview
-A Model Context Protocol (MCP) server implementation that provides network control and management capabilities through the POX SDN controller. This server enables Python-based network programming, OpenFlow device management, and automated network analysis through POX's modular architecture. Perfect for educational environments, network prototyping, and SDN research.
+A Model Context Protocol (MCP) server implementation that provides network control and management capabilities through the ONOS SDN controller. This server enables programmatic access to ONOS network management, OpenFlow device control, and comprehensive analytics through ONOS's REST API. Perfect for educational environments, network prototyping, and SDN research with ONOS.
 
 ## Components
 
 ### Resources
-The server exposes two dynamic resources:
-- `pox://network-config`: A comprehensive POX controller configuration memo
-  - Tracks active POX components and their configurations
-  - Records network topology and flow rules
-  - Maintains discovered network insights
-- `pox://topology`: Real-time network topology view
-  - Shows active OpenFlow datapaths (switches)
-  - Maps host locations and connections
-  - Displays link status and port mappings
+The server exposes over 30 dynamic resources, including:
+- `onos://devices`: Information about all network devices
+- `onos://device/{deviceId}`: Detailed information about a specific device
+- `onos://links`: Information about all network links
+- `onos://hosts`: Information about all hosts connected to the network
+- `onos://topology`: Overview of current network topology
+- `onos://applications`: Information about all installed applications
+- `onos://flows/{deviceId}`: All flow entries for a specific device
+- `onos://system`: High-level system information, version, and memory usage
+- `onos://metrics`: Statistics information for all metrics
+- `onos://meters/{deviceId}`: All meter entries for a specific device
+- `onos://intents`: All intents in the system
+- `onos://statistics/*`: Various statistics resources for ports, flows, and tables
+- `onos://network/configuration`: The entire network configuration
+- `onos://configuration`: Component configurations
+- And many more for comprehensive ONOS system access
 
 ### Prompts
-The server provides three specialized prompts:
-- `pox-network-manager`: Interactive prompt for POX controller management
-  - Required argument: `topic` - The network control aspect to focus on
-  - Helps configure POX components and modules
-  - Guides through network policy implementation
-  - Integrates with network configuration memo
+The server provides nine specialized prompts:
+- `diagnose-network-issue`: Interactive prompt for diagnosing network issues
+  - Helps identify connectivity problems and service degradation
+  - Analyzes network symptoms and changes
+  - Suggests targeted solutions
 
-- `simple-hub`: Basic L2 hub implementation using POX
-  - Required argument: `dpid` - The datapath identifier
-  - Demonstrates POX's event-driven programming
-  - Shows basic packet handling and flooding
-  - Explains POX's core mechanisms
+- `design-network-flow`: Assistance for designing and implementing network flows
+  - Helps create traffic isolation, load balancing, and security policies
+  - Guides source/destination flow creation
+  - Supports specific routing requirements
 
-- `learning-switch`: L2 learning switch implementation
-  - Required argument: `dpid` - The datapath identifier
-  - Showcases POX's table management
-  - Implements MAC learning and forwarding
-  - Demonstrates POX's packet handling capabilities
+- `configure-intent-based-networking`: Support for intent-based networking
+  - Guides connectivity objectives implementation
+  - Helps with traffic prioritization
+  - Assists with resilience and failover configuration
+
+- `network-health-report`: Comprehensive network status analysis
+  - Provides device availability reporting
+  - Delivers flow and intent statistics
+  - Identifies bottlenecks and performance issues
+
+- `sdn-migration-planning`: Planning for SDN migration with ONOS
+  - Helps assess current architecture
+  - Guides through migration goals and priorities
+  - Develops phased implementation strategies
+
+- `system-health-check`: System-level diagnostics for ONOS
+  - Analyzes resource utilization
+  - Reports cluster status
+  - Evaluates component health
+
+- `metrics-analysis`: Deep analysis of ONOS metrics
+  - Identifies performance bottlenecks
+  - Highlights anomalies
+  - Recommends optimizations
+
+- `qos-configuration`: Quality of Service implementation guidance
+  - Helps prioritize traffic types
+  - Assists with bandwidth and latency guarantees
+  - Creates class-based service levels
+
+- `performance-tuning`: Optimization for ONOS deployments
+  - Resolves performance issues
+  - Enhances resource allocation
+  - Improves architecture for scale
 
 ### Tools
-The server offers five core tools:
+The server offers over 20 powerful tools, including:
 
-#### Datapath Management Tools
-- `get_switches`
-   - List all connected OpenFlow datapaths
+#### Network Management Tools
+- `get_network_summary`
+   - Get a high-level summary of the network including devices, links, and hosts
    - No input required
-   - Returns: Array of active POX-controlled switches
-   - Includes connection status and capabilities
+   - Returns comprehensive network overview with device details
 
-- `get_switch_desc`
-   - Get detailed datapath information
-   - Input:
-     - `dpid` (string): Datapath identifier
-   - Returns: POX-managed switch details and features
+- `get_network_analytics`
+   - Get analytics about network performance, utilization and health
+   - No input required
+   - Returns detailed performance metrics and utilization statistics
 
-#### Flow Management Tools
-- `get_flow_stats`
-   - Retrieve POX flow statistics
-   - Input:
-     - `dpid` (string): Datapath identifier
-     - `match` (object, optional): POX match structure
-     - `table_id` (string, optional): OpenFlow table ID
-     - `out_port` (string, optional): Output port filter
-   - Returns: POX flow statistics including packet counts
+- `get_system_health`
+   - Get comprehensive system health information including memory usage and cluster status
+   - No input required
+   - Returns detailed health report with memory utilization and node status
 
-- `set_table`
-   - Configure POX flow tables
-   - Input:
-     - `dpid` (string): Datapath identifier
-     - `flows` (array): POX flow specifications
-   - Returns: Flow table update confirmation
+#### Application Management Tools
+- `install_application`
+   - Install a new ONOS application from an OAR file URL
+   - Input: `app_file_url` (string)
+   - Returns installation status
 
-#### Analysis Tools
-- `append_insight`
-   - Add network insights to POX configuration memo
-   - Input:
-     - `insight` (string): Network observation or analysis
-   - Returns: Insight addition confirmation
-   - Updates pox://network-config resource
+- `activate_application`
+   - Activate an ONOS application
+   - Input: `app_name` (string)
+   - Returns activation status
+
+- `deactivate_application`
+   - Deactivate an ONOS application
+   - Input: `app_name` (string)
+   - Returns deactivation status
+
+- `remove_application`
+   - Uninstall an ONOS application
+   - Input: `app_name` (string)
+   - Returns removal status
+
+#### Network Configuration Tools
+- `add_flow`
+   - Add a flow rule to a device
+   - Input: device ID, priority, timeout, etc.
+   - Returns flow addition status
+
+- `remove_flow`
+   - Remove a flow rule from a device
+   - Input: device ID and flow ID
+   - Returns removal status
+
+- `add_intent`
+   - Add a host-to-host intent
+   - Input: app ID, priority, source and destination hosts
+   - Returns intent creation status
+
+- `get_shortest_path`
+   - Find the shortest path between two devices or hosts
+   - Input: source and destination IDs
+   - Returns detailed path information
+
+#### Other tools
+Additional tools for device configuration, QoS management, diagnostics, and more.
 
 ## Usage with Claude Desktop
-
-### uv
 
 ```json
 # Add the server to your claude_desktop_config.json
 {
   "mcpServers": {
-    "pox": {
-      "command": "uv",
+    "onos": {
+      "command": "python",
       "args": [
-        "--directory",
-        "parent_of_servers_repo/servers/src/mcp_server_pox",
-        "run",
-        "server.py"
+        "src/onos-mcp-server/server.py"
       ],
       "env": {
-        "POX_SERVER_URL": "http://localhost:8000"
+        "ONOS_API_BASE": "http://localhost:8181/onos/v1",
+        "ONOS_USERNAME": "onos",
+        "ONOS_PASSWORD": "rocks"
       }
     }
   }
 }
 ```
+
+## Requirements
+- Python 3.7+
+- ONOS controller (running and accessible)
+- httpx library
+- mcp library
+
+## Configuration
+The server uses the following environment variables:
+- `ONOS_API_BASE`: Base URL for ONOS API (default: http://localhost:8181/onos/v1)
+- `ONOS_USERNAME`: Username for ONOS API authentication (default: onos)
+- `ONOS_PASSWORD`: Password for ONOS API authentication (default: rocks)
 
 ## License
 
