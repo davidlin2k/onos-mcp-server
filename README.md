@@ -141,9 +141,12 @@ Additional tools for device configuration, QoS management, diagnostics, and more
 {
   "mcpServers": {
     "onos": {
-      "command": "python",
+      "command": "uv",
       "args": [
-        "src/onos-mcp-server/server.py"
+        "--directory",
+        "parent_of_servers_repo/servers/src/mcp_server_pox",
+        "run",
+        "server.py"
       ],
       "env": {
         "ONOS_API_BASE": "http://localhost:8181/onos/v1",
