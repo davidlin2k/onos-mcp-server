@@ -160,6 +160,7 @@ Additional tools for device configuration, QoS management, diagnostics, and more
 
 ## Requirements
 - Python 3.7+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)
 - ONOS controller (running and accessible)
 - httpx library
 - mcp library
