@@ -144,7 +144,7 @@ Additional tools for device configuration, QoS management, diagnostics, and more
       "command": "uv",
       "args": [
         "--directory",
-        "parent_of_servers_repo/servers/src/mcp_server_pox",
+        "parent_of_servers_repo/servers/src/onos-mcp-server",
         "run",
         "server.py"
       ],
