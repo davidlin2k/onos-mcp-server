@@ -4,6 +4,7 @@ import os
 import httpx
 from mcp.server.fastmcp import FastMCP, Context, Image
 from mcp.server.fastmcp.prompts import base
+from urllib.parse import quote
 
 # Create an MCP server
 mcp = FastMCP("ONOS Network Management", log_level="ERROR")
@@ -472,11 +473,13 @@ async def remove_flow(device_id: str, flow_id: str) -> str:
     Remove a flow rule from a device.
     
     Args:
-        device_id: Device ID
-        flow_id: Flow rule ID to remove
+        device_id: Device ID (can include special characters, will be URL encoded)
+        flow_id: Flow rule ID to remove (can include special characters, will be URL encoded)
     """
     try:
-        await make_onos_request("delete", f"/flows/{device_id}/{flow_id}")
+        encoded_device_id = quote(device_id, safe='')
+        encoded_flow_id = quote(flow_id, safe='')
+        await make_onos_request("delete", f"/flows/{encoded_device_id}/{encoded_flow_id}")
         return f"Flow {flow_id} removed successfully from device {device_id}"
     except Exception as e:
         return f"Error removing flow: {str(e)}"
