@@ -47,211 +47,215 @@ async def make_onos_request(
             raise ValueError(f"Error connecting to ONOS: {str(e)}")
 
 # Resources
-@mcp.resource("onos://devices")
+@mcp.tool()
 async def get_devices() -> str:
     """Get information about all network devices."""
     devices = await make_onos_request("get", "/devices")
     return str(devices)
 
-@mcp.resource("onos://device/{deviceId}")
+@mcp.tool()
 async def get_device(deviceId: str) -> str:
-    """Get detailed information about a specific device."""
+    """Get detailed information about a specific device.
+    
+    Args:
+        deviceId: ID of the device to query
+    """
     device = await make_onos_request("get", f"/devices/{deviceId}")
     return str(device)
 
-@mcp.resource("onos://links")
+@mcp.tool()
 async def get_links() -> str:
     """Get information about all network links."""
     links = await make_onos_request("get", "/links")
     return str(links)
 
-@mcp.resource("onos://hosts")
+@mcp.tool()
 async def get_hosts() -> str:
     """Get information about all hosts connected to the network."""
     hosts = await make_onos_request("get", "/hosts")
     return str(hosts)
 
-@mcp.resource("onos://topology")
+@mcp.tool()
 async def get_topology() -> str:
     """Get overview of current network topology."""
     topology = await make_onos_request("get", "/topology")
     return str(topology)
 
-@mcp.resource("onos://applications")
+@mcp.tool()
 async def get_applications() -> str:
     """Get information about all installed applications."""
     applications = await make_onos_request("get", "/applications")
     return str(applications)
 
-@mcp.resource("onos://flows/{deviceId}")
+@mcp.tool()
 async def get_device_flows(deviceId: str) -> str:
     """Get all flow entries for a specific device."""
     flows = await make_onos_request("get", f"/flows/{deviceId}")
     return str(flows)
 
-@mcp.resource("onos://system")
+@mcp.tool()
 async def get_system_info() -> str:
     """Get high-level system information, version, and memory usage."""
     system_info = await make_onos_request("get", "/system")
     return str(system_info)
 
-@mcp.resource("onos://metrics")
+@mcp.tool()
 async def get_metrics() -> str:
     """Get statistics information for all metrics."""
     metrics = await make_onos_request("get", "/metrics")
     return str(metrics)
 
-@mcp.resource("onos://metrics/{metricName}")
+@mcp.tool()
 async def get_specific_metric(metricName: str) -> str:
     """Get statistics information for a specific metric."""
     metric = await make_onos_request("get", f"/metrics/{metricName}")
     return str(metric)
 
-@mcp.resource("onos://meters/{deviceId}")
+@mcp.tool()
 async def get_device_meters(deviceId: str) -> str:
     """Get all meter entries for a specific device."""
     meters = await make_onos_request("get", f"/meters/{deviceId}")
     return str(meters)
 
-@mcp.resource("onos://intents")
+@mcp.tool()
 async def get_all_intents() -> str:
     """Get all intents in the system."""
     intents = await make_onos_request("get", "/intents")
     return str(intents)
 
-@mcp.resource("onos://groups/{deviceId}")
+@mcp.tool()
 async def get_device_groups(deviceId: str) -> str:
     """Get all group entries for a specific device."""
     groups = await make_onos_request("get", f"/groups/{deviceId}")
     return str(groups)
 
-@mcp.resource("onos://statistics/ports")
+@mcp.tool()
 async def get_port_statistics() -> str:
     """Get statistics for all ports across all devices."""
     statistics = await make_onos_request("get", "/statistics/ports")
     return str(statistics)
 
-@mcp.resource("onos://statistics/ports/{deviceId}")
+@mcp.tool()
 async def get_device_port_statistics(deviceId: str) -> str:
     """Get statistics for all ports on a specific device."""
     statistics = await make_onos_request("get", f"/statistics/ports/{deviceId}")
     return str(statistics)
 
-@mcp.resource("onos://statistics/flows")
+@mcp.tool()
 async def get_flow_statistics() -> str:
     """Get statistics for all flows across all devices."""
     statistics = await make_onos_request("get", "/statistics/flows")
     return str(statistics)
 
-@mcp.resource("onos://statistics/flows/{deviceId}")
+@mcp.tool()
 async def get_device_flow_statistics(deviceId: str) -> str:
     """Get statistics for all flows on a specific device."""
     statistics = await make_onos_request("get", f"/statistics/flows/{deviceId}")
     return str(statistics)
 
-@mcp.resource("onos://statistics/tables")
+@mcp.tool()
 async def get_table_statistics() -> str:
     """Get statistics for all flow tables across all devices."""
     statistics = await make_onos_request("get", "/statistics/tables")
     return str(statistics)
 
-@mcp.resource("onos://statistics/tables/{deviceId}")
+@mcp.tool()
 async def get_device_table_statistics(deviceId: str) -> str:
     """Get statistics for all flow tables on a specific device."""
     statistics = await make_onos_request("get", f"/statistics/tables/{deviceId}")
     return str(statistics)
 
-@mcp.resource("onos://network/configuration")
+@mcp.tool()
 async def get_network_configuration() -> str:
     """Get the entire network configuration."""
     configuration = await make_onos_request("get", "/network/configuration")
     return str(configuration)
 
-@mcp.resource("onos://configuration")
+@mcp.tool()
 async def get_component_configuration() -> str:
     """Get component configurations."""
     configuration = await make_onos_request("get", "/configuration")
     return str(configuration)
 
-@mcp.resource("onos://configuration/{componentName}")
+@mcp.tool()
 async def get_specific_component_configuration(componentName: str) -> str:
     """Get configuration for a specific component."""
     configuration = await make_onos_request("get", f"/configuration/{componentName}")
     return str(configuration)
 
-@mcp.resource("onos://packet/processors")
+@mcp.tool()
 async def get_packet_processors() -> str:
     """Get all packet processors."""
     processors = await make_onos_request("get", "/packet/processors")
     return str(processors)
 
-@mcp.resource("onos://regions")
+@mcp.tool()
 async def get_regions() -> str:
     """Get information about all regions."""
     regions = await make_onos_request("get", "/regions")
     return str(regions)
 
-@mcp.resource("onos://regions/{regionId}")
+@mcp.tool()
 async def get_region(regionId: str) -> str:
     """Get detailed information about a specific region."""
     region = await make_onos_request("get", f"/regions/{regionId}")
     return str(region)
 
-@mcp.resource("onos://keys")
+@mcp.tool()
 async def get_device_keys() -> str:
     """Get all device keys."""
     keys = await make_onos_request("get", "/keys")
     return str(keys)
 
-@mcp.resource("onos://keys/{deviceId}")
+@mcp.tool()
 async def get_device_key(deviceId: str) -> str:
     """Get keys for a specific device."""
     key = await make_onos_request("get", f"/keys/{deviceId}")
     return str(key)
 
-@mcp.resource("onos://diagnostics")
+@mcp.tool()
 async def get_diagnostics() -> str:
     """Get diagnostics information."""
     diagnostics = await make_onos_request("get", "/diagnostics")
     return str(diagnostics)
 
-@mcp.resource("onos://flowobjectives/{deviceId}/filter")
+@mcp.tool()
 async def get_filter_objectives(deviceId: str) -> str:
     """Get filter flow objectives for a device."""
     objectives = await make_onos_request("get", f"/flowobjectives/{deviceId}/filter")
     return str(objectives)
 
-@mcp.resource("onos://flowobjectives/{deviceId}/forward")
+@mcp.tool()
 async def get_forward_objectives(deviceId: str) -> str:
     """Get forwarding flow objectives for a device."""
     objectives = await make_onos_request("get", f"/flowobjectives/{deviceId}/forward")
     return str(objectives)
 
-@mcp.resource("onos://flowobjectives/{deviceId}/next")
+@mcp.tool()
 async def get_next_objectives(deviceId: str) -> str:
     """Get next flow objectives for a device."""
     objectives = await make_onos_request("get", f"/flowobjectives/{deviceId}/next")
     return str(objectives)
 
-@mcp.resource("onos://mcast")
+@mcp.tool()
 async def get_multicast_routes() -> str:
     """Get all multicast routes."""
     routes = await make_onos_request("get", "/mcast")
     return str(routes)
 
-@mcp.resource("onos://mcast/{routeId}")
+@mcp.tool()
 async def get_multicast_route(routeId: str) -> str:
     """Get a specific multicast route."""
     route = await make_onos_request("get", f"/mcast/{routeId}")
     return str(route)
 
-@mcp.resource("onos://mastership")
+@mcp.tool()
 async def get_mastership() -> str:
     """Get mastership information for all devices."""
     mastership = await make_onos_request("get", "/mastership")
     return str(mastership)
 
-@mcp.resource("onos://mastership/{deviceId}")
+@mcp.tool()
 async def get_device_mastership(deviceId: str) -> str:
     """Get mastership information for a specific device."""
     mastership = await make_onos_request("get", f"/mastership/{deviceId}")
@@ -1216,4 +1220,3 @@ def performance_tuning_prompt() -> str:
 
 if __name__ == "__main__":
     mcp.run()
-    
