@@ -34,7 +34,7 @@ async def make_onos_request(
             elif method.lower() == "put":
                 response = await client.put(url, auth=auth, json=json, timeout=HTTP_TIMEOUT)
             elif method.lower() == "delete":
-                response = await client.delete(url, auth=auth, json=json, timeout=HTTP_TIMEOUT)
+                response = await client.delete(url, auth=auth, timeout=HTTP_TIMEOUT)
             else:
                 raise ValueError(f"Unsupported HTTP method: {method}")
             
@@ -140,6 +140,18 @@ async def get_device_port_statistics(deviceId: str) -> str:
     """Get statistics for all ports on a specific device."""
     statistics = await make_onos_request("get", f"/statistics/ports/{deviceId}")
     return str(statistics)
+
+@mcp.tool()
+async def get_flow_rules() -> str:
+    """Get all flow rules across all devices."""
+    flows = await make_onos_request("get", "/flows")
+    return str(flows)
+
+@mcp.tool()
+async def remove_flow_rule(deviceId: str, flowId: str) -> str:
+    """Remove a specific flow rule from a device."""
+    await make_onos_request("delete", f"/flows/{deviceId}/{flowId}")
+    return f"Flow rule {flowId} removed from device {deviceId}"
 
 @mcp.tool()
 async def get_flow_statistics() -> str:
@@ -410,40 +422,41 @@ async def add_host(mac: str, vlan: str, ip_addresses: List[str], location_device
         return f"Error adding host: {str(e)}"
 
 @mcp.tool()
-async def add_flow(device_id: str, priority: int, timeout: int, is_permanent: bool, ingress_port: str, output_port: str) -> str:
+async def add_flow(
+    device_id: str,
+    priority: int,
+    timeout: int,
+    is_permanent: bool,
+    criteria: List[Dict[str, Any]],
+    instructions: List[Dict[str, Any]]
+) -> str:
     """
-    Add a flow rule to a device.
+    Add a flow rule to a device with comprehensive criteria and instruction support.
     
     Args:
         device_id: Device ID to add the flow to
         priority: Flow priority (higher values = higher priority)
         timeout: Flow timeout in seconds (0 for no timeout)
         is_permanent: Whether the flow is permanent
-        ingress_port: Port number for incoming traffic
-        output_port: Port number for outgoing traffic
+        criteria: List of criteria dictionaries. Each criterion must have 'type' and associated fields.
+                For example: [{"type": "ETH_TYPE", "ethType": "0x88cc"},
+                            {"type": "IN_PORT", "port": "1"}]
+        instructions: List of instruction dictionaries. Each instruction must have 'type' and associated fields.
+                    For example: [{"type": "OUTPUT", "port": "2"},
+                                {"type": "GROUP", "groupId": 1}]
     """
     try:
-        # Create a simple port-to-port flow rule
+        # Create flow rule with full criteria and instruction support
         flow_data = {
             "priority": priority,
             "timeout": timeout,
             "isPermanent": is_permanent,
             "deviceId": device_id,
             "treatment": {
-                "instructions": [
-                    {
-                        "type": "OUTPUT",
-                        "port": output_port
-                    }
-                ]
+                "instructions": instructions
             },
             "selector": {
-                "criteria": [
-                    {
-                        "type": "IN_PORT",
-                        "port": ingress_port
-                    }
-                ]
+                "criteria": criteria
             }
         }
         
