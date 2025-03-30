@@ -149,10 +149,21 @@ async def get_flow_rules() -> str:
     return str(flows)
 
 @mcp.tool()
-async def remove_flow_rule(deviceId: str, flowId: str) -> str:
-    """Remove a specific flow rule from a device."""
-    await make_onos_request("delete", f"/flows/{deviceId}/{flowId}")
-    return f"Flow rule {flowId} removed from device {deviceId}"
+async def remove_flow_rule(deviceId: str, flowId: int) -> str:
+    """
+    Remove a flow rule from a device.
+    
+    Args:
+        device_id: Device ID (can include special characters, will be URL encoded)
+        flow_id: Flow rule ID to remove (can include special characters, will be URL encoded)
+    """
+    try:
+        encoded_device_id = quote(deviceId, safe='')
+        encoded_flow_id = quote(str(flowId), safe='')
+        await make_onos_request("delete", f"/flows/{encoded_device_id}/{encoded_flow_id}")
+        return f"Flow {flowId} removed successfully from device {deviceId}"
+    except Exception as e:
+        return f"Error removing flow: {str(e)}"
 
 @mcp.tool()
 async def get_flow_statistics() -> str:
@@ -466,23 +477,6 @@ async def add_flow(
         return f"Flow added successfully: {result}"
     except Exception as e:
         return f"Error adding flow: {str(e)}"
-
-@mcp.tool()
-async def remove_flow(device_id: str, flow_id: str) -> str:
-    """
-    Remove a flow rule from a device.
-    
-    Args:
-        device_id: Device ID (can include special characters, will be URL encoded)
-        flow_id: Flow rule ID to remove (can include special characters, will be URL encoded)
-    """
-    try:
-        encoded_device_id = quote(device_id, safe='')
-        encoded_flow_id = quote(flow_id, safe='')
-        await make_onos_request("delete", f"/flows/{encoded_device_id}/{encoded_flow_id}")
-        return f"Flow {flow_id} removed successfully from device {device_id}"
-    except Exception as e:
-        return f"Error removing flow: {str(e)}"
 
 @mcp.tool()
 async def add_intent(app_id: str, priority: int, source_host: str, destination_host: str) -> str:
