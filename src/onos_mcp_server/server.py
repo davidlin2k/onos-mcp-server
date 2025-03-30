@@ -149,13 +149,13 @@ async def get_flow_rules() -> str:
     return str(flows)
 
 @mcp.tool()
-async def remove_flow_rule(deviceId: str, flowId: int) -> str:
+async def remove_flow_rule(deviceId: str, flowId: str | int) -> str:
     """
     Remove a flow rule from a device.
     
     Args:
         device_id: Device ID (can include special characters, will be URL encoded)
-        flow_id: Flow rule ID to remove (can include special characters, will be URL encoded)
+        flow_id: Flow rule ID to remove (format in string)
     """
     try:
         encoded_device_id = quote(deviceId, safe='')
