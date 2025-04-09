@@ -2,7 +2,7 @@ from mcp.server.fastmcp import FastMCP
 
 from onos_mcp_server.prompts import register_prompts
 from onos_mcp_server.tools import (
-    device, 
+    device,
     diagnostics,
     flow,
     group,
@@ -24,9 +24,10 @@ from onos_mcp_server.tools import (
     custom_tools,
 )
 
+
 def create_server():
     mcp = FastMCP("ONOS Network Management", log_level="ERROR")
-    
+
     # Register all tools
     device.register_tools(mcp)
     diagnostics.register_tools(mcp)
@@ -52,7 +53,8 @@ def create_server():
     register_prompts(mcp)
 
     return mcp
-    
+
+
 if __name__ == "__main__":
     mcp = create_server()
     mcp.run()

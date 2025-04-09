@@ -1,9 +1,10 @@
 from mcp.server.fastmcp import FastMCP
 from onos_mcp_server.api_client import make_onos_request
 
+
 async def get_devices() -> str:
     """Get information about all network devices.
-    
+
     Returns array of all discovered infrastructure devices.
     """
     try:
@@ -12,12 +13,13 @@ async def get_devices() -> str:
     except Exception as e:
         return f"Error retrieving devices: {str(e)}"
 
+
 async def get_device(deviceId: str) -> str:
     """Get detailed information about a specific device.
-    
+
     Args:
         deviceId: ID of the device to query
-        
+
     Returns details of the specified infrastructure device.
     """
     try:
@@ -26,12 +28,13 @@ async def get_device(deviceId: str) -> str:
     except Exception as e:
         return f"Error retrieving device {deviceId}: {str(e)}"
 
+
 async def remove_device(deviceId: str) -> str:
     """Administratively remove a device from the inventory.
-    
+
     Args:
         deviceId: ID of the device to remove
-        
+
     Administratively deletes the specified device from the inventory of known devices.
     """
     try:
@@ -40,9 +43,10 @@ async def remove_device(deviceId: str) -> str:
     except Exception as e:
         return f"Error removing device {deviceId}: {str(e)}"
 
+
 async def get_all_device_ports() -> str:
     """Get information about ports on all infrastructure devices.
-    
+
     Returns port details of all infrastructure devices.
     """
     try:
@@ -51,12 +55,13 @@ async def get_all_device_ports() -> str:
     except Exception as e:
         return f"Error retrieving all device ports: {str(e)}"
 
+
 async def get_device_ports(deviceId: str) -> str:
     """Get information about all ports on a specific device.
-    
+
     Args:
         deviceId: ID of the device to query ports for
-        
+
     Returns details of ports for the specified infrastructure device.
     """
     try:
@@ -65,26 +70,28 @@ async def get_device_ports(deviceId: str) -> str:
     except Exception as e:
         return f"Error retrieving ports for device {deviceId}: {str(e)}"
 
+
 async def change_device_port_state(device_id: str, port_id: str, enabled: bool) -> str:
     """Change the administrative state of a device port.
-    
+
     Args:
         device_id: Device identifier
         port_id: Port number
         enabled: True to enable the port, False to disable it
-        
+
     Changes the administrative state of the specified port on the device.
     """
     try:
-        port_data = {
-            "enabled": enabled
-        }
-        
-        await make_onos_request("post", f"/devices/{device_id}/portstate/{port_id}", json=port_data)
+        port_data = {"enabled": enabled}
+
+        await make_onos_request(
+            "post", f"/devices/{device_id}/portstate/{port_id}", json=port_data
+        )
         state = "enabled" if enabled else "disabled"
         return f"Port {port_id} on device {device_id} {state} successfully"
     except Exception as e:
         return f"Error changing port state: {str(e)}"
+
 
 def register_tools(mcp_server: FastMCP):
     """Register all device management tools with the MCP server."""
