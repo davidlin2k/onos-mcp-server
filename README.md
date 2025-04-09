@@ -6,7 +6,7 @@ A Model Context Protocol (MCP) server implementation that provides network contr
 ## Features
 
 ### Network Resources
-The server provides access to over 30 ONOS REST API endpoints, including:
+The server provides access to ONOS REST API endpoints, including:
 
 - Network devices, links, and hosts
 - Topology information
